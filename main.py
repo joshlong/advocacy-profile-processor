@@ -91,8 +91,8 @@ def main(_: typing.List[str]):
     profile_page: str = os.environ['PROFILE_PAGE']
     assert profile_page is not None, 'the PROFILE_PAGE environment variable must be set'
 
-    def build_date_string(date: datetime.datetime) -> str:
-        return date.strftime("%b %d %Y")
+    def build_date_string(d : datetime.datetime) -> str:
+        return d.isoformat().split('T')[0]
 
     def podcast_markdown_line(podcast: Podcast) -> str:
         return """[(%s) %s](%s) """ % (build_date_string(podcast.date),
@@ -116,7 +116,7 @@ def main(_: typing.List[str]):
     videos_markup = os.linesep.join(['* %s' % video_markdown_line(v) for v in videos])
 
     profile_page: str = os.environ['PROFILE_PAGE']
-    assert os.path.exists(profile_page), 'the profile page must be real'
+    assert os.path.exists(profile_page), 'the profile page %s does not exist.' % profile_page
 
     with open(profile_page, 'r') as ppfp:
         content = ppfp.read()
