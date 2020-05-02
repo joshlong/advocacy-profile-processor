@@ -1,4 +1,4 @@
-name: Spring Tips Google Sheet Feed Processor
+name: Advocacy Profile Processor
 
 env:
   GIT_USERNAME: ${{ secrets.GIT_USERNAME	}}

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#git config --global user.email "josh@joshlong.com"
-#git config --global user.name "Advocacy Profile Processor"
+git config --global user.email "josh@joshlong.com"
+git config --global user.name "Advocacy Profile Processor"
 
 OUTPUT_DIR=$HOME/Desktop/out
 CLONE_DIR=$OUTPUT_DIR/clone
