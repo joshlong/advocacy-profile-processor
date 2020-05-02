@@ -45,12 +45,11 @@ pipenv install
 pipenv run python main.py
 
 cd $JTT
-hub pull-request -b vmware-tanzu/tanzu-tuesdays:master -m $MESSAGE || echo "there's already a PR, so just updating it"
 
-#
-
-
-cd $JTT
 git add "$PROFILE_PAGE"
 git commit -a -m "${MESSAGE}"
 git push
+
+hub pull-request -b vmware-tanzu/tanzu-tuesdays:master -m $MESSAGE || echo "there's already a PR, so just updating it"
+
+#
