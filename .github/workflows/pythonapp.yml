@@ -29,7 +29,6 @@ jobs:
           python-version: 3.7
 
       - name: Updates the remote profile page
-        run: hub --version
-#        run: ./run.sh
+        run: hub --version && ./run.sh
 
 
