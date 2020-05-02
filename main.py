@@ -78,9 +78,16 @@ def fetch_bootiful_podcasts() -> typing.List[Podcast]:
     podcasts = load_json_from_network('http://bootifulpodcast.fm/podcasts.json')
     results = []
     for p in podcasts:
-        ts = int(p['date']) / 1000
-        date = datetime.datetime.fromtimestamp(ts)
-        date = datetime.datetime(date.year, date.month, date.day)
+        # ts = int(p['date']) / 1000
+        # date = datetime.datetime.fromtimestamp(ts)
+        # date = datetime.datetime(date.year, date.month, date.day)
+        keys = ['dataAndTime', 'dateAndTime']
+        date: typing.Union[str, None] = None
+        for k in keys:
+            if k in p:
+                date = p[k]
+        m, d, y = [int(x) for x in date.split('/')]
+        date: datetime.datetime = datetime.datetime(y, m, d)
         results.append(Podcast(p['id'], p['uid'], p['title'], date, p['episodeUri'], p['description'], p['episodeUri']))
     return results
 
@@ -91,7 +98,7 @@ def main(_: typing.List[str]):
     profile_page: str = os.environ['PROFILE_PAGE']
     assert profile_page is not None, 'the PROFILE_PAGE environment variable must be set'
 
-    def build_date_string(d : datetime.datetime) -> str:
+    def build_date_string(d: datetime.datetime) -> str:
         return d.isoformat().split('T')[0]
 
     def podcast_markdown_line(podcast: Podcast) -> str:
