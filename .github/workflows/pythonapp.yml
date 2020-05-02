@@ -4,10 +4,6 @@ env:
   GIT_USERNAME: ${{ secrets.GIT_USERNAME	}}
   GIT_URI:  ${{ secrets.GIT_URI }}
   GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
-  CREDENTIALS_JSON: ${{ secrets.CREDENTIALS_JSON  }}
-  PICKLED_TOKEN: ${{ secrets.PICKLED_TOKEN  }}
-  JSON_FN: episodes.json
-  RSS_FN: episodes.rss
 
 on:
   push:
@@ -33,6 +29,7 @@ jobs:
           python-version: 3.7
 
       - name: Updates the remote profile page
-        run: ./run.sh
+        run: hub --version
+#        run: ./run.sh
 
 

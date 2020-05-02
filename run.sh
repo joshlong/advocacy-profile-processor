@@ -18,7 +18,7 @@ hub pull-request -b vmware-tanzu/tanzu-tuesdays:master -m $message || echo "ther
 pipenv install
 pipenv run python main.py
 
-cd $CLONE_DIR
+cd "$CLONE_DIR"
 git add "$PROFILE_PAGE"
 git commit -a -m "${message}"
 git push
