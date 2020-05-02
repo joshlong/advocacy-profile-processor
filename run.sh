@@ -38,14 +38,17 @@ rm -rf $JTT && rm -rf $VTT
 
 cd $HOME
 git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/joshlong/tanzu-tuesdays.git $JTT || die "couldn't clone to ${JTT} the second time around. "
-cd $JTT
-hub pull-request -b vmware-tanzu/tanzu-tuesdays:master -m $MESSAGE || echo "there's already a PR, so just updating it"
 
-#
 cd $ROOT_DIR
 
 pipenv install
 pipenv run python main.py
+
+cd $JTT
+hub pull-request -b vmware-tanzu/tanzu-tuesdays:master -m $MESSAGE || echo "there's already a PR, so just updating it"
+
+#
+
 
 cd $JTT
 git add "$PROFILE_PAGE"
