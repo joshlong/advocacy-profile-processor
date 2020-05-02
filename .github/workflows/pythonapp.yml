@@ -1,0 +1,38 @@
+name: Spring Tips Google Sheet Feed Processor
+
+env:
+  GIT_USERNAME: ${{ secrets.GIT_USERNAME	}}
+  GIT_URI:  ${{ secrets.GIT_URI }}
+  GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+  CREDENTIALS_JSON: ${{ secrets.CREDENTIALS_JSON  }}
+  PICKLED_TOKEN: ${{ secrets.PICKLED_TOKEN  }}
+  JSON_FN: episodes.json
+  RSS_FN: episodes.rss
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    - cron:  '55 3 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+
+      - name: Install pipenv
+        uses: dschep/install-pipenv-action@v1
+
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+
+      - name: Updates the remote profile page
+        run: ./run.sh
+
+
