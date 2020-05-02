@@ -36,7 +36,7 @@ git push --force || die "couldn't push the changes to the repository."
 # - then clone my repo and do the change on it
 rm -rf $JTT && rm -rf $VTT
 
-cd $HOME
+cd $ROOT_DIR
 git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/joshlong/tanzu-tuesdays.git $JTT || die "couldn't clone to ${JTT} the second time around. "
 
 cd $ROOT_DIR
