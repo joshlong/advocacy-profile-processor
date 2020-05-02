@@ -1,9 +1,13 @@
 name: Advocacy Profile Processor
 
 env:
-  GIT_USERNAME: ${{ secrets.GIT_USERNAME	}}
   GIT_URI:  ${{ secrets.GIT_URI }}
+
+  GIT_USERNAME: ${{ secrets.GIT_USERNAME	}}
   GIT_PASSWORD: ${{ secrets.GIT_PASSWORD }}
+  
+  GITHUB_USERNAME: ${{ secrets.GIT_USERNAME	}}
+  GITHUB_PASSWORD: ${{ secrets.GIT_PASSWORD }}
 
 on:
   push:

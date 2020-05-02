@@ -127,6 +127,7 @@ def main(_: typing.List[str]):
 
     markup = replace_fragment(content, 'PODCASTS', add_newlines_to_section(podcasts_markup))
     markup = replace_fragment(markup, 'SCREENCASTS', add_newlines_to_section(videos_markup))
+    markup = '%s\n\n%s' % (markup, '<!-- generated %s -->' % datetime.datetime.now().isoformat())
 
     with open(profile_page, 'w') as ppfp:
         ppfp.write(markup)
