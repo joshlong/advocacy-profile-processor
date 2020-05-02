@@ -11,7 +11,7 @@ VTT="$CLONE_DIR/vtt"
 
 mkdir -p $CLONE_DIR
 
-export PROFILE_PAGE=$CLONE_DIR/content/advocate/joshlong.md
+export PROFILE_PAGE=${JTT}/content/advocate/joshlong.md
 
 TS=$(date +%s)
 MESSAGE="update joshlong.md @ ${ts}"
@@ -22,22 +22,23 @@ rm -rf $OUTPUT_DIR && mkdir -p $OUTPUT_DIR
 
 # here's what I need to do:
 # - git clone the actual repo
-git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/vmware-tanzu/tanzu-tuesdays.git $VTT || die "couldn't clone "
-git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/joshlong/tanzu-tuesdays.git $JTT
+git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/vmware-tanzu/tanzu-tuesdays.git $VTT || die "couldn't clone to ${VTT}. "
+git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/joshlong/tanzu-tuesdays.git $JTT || die "couldn't clone to ${JTT}. "
 
 # - move the config for my repo into the actual repo
-mv $JTT/.git/config $VTT/.git/config
+mv $JTT/.git/config $VTT/.git/config || die "couldn't copy the souce config to the target config."
 
 cd $VTT || die "couldn't go to the $VTT directory."
 
 # - then force push the actual repo into my repo (no need to worry about merging stuff if, for sure, im using the latest version of the repo!)
-git push --force
+git push --force || die "couldn't push the changes to the repository."
 
 # - then clone my repo and do the change on it
-rm -rf  $JTT && rm -rf $VTT
-git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/joshlong/tanzu-tuesdays.git $JTT
-cd $JTT
+rm -rf $JTT && rm -rf $VTT
 
+cd $HOME
+git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/joshlong/tanzu-tuesdays.git $JTT || die "couldn't clone to ${JTT} the second time around. "
+cd $JTT
 hub pull-request -b vmware-tanzu/tanzu-tuesdays:master -m $MESSAGE || echo "there's already a PR, so just updating it"
 
 #
