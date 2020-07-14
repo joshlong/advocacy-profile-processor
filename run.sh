@@ -9,7 +9,7 @@ mkdir -p $output
 export GIT_CLONE_DIR=$output/clone
 git clone https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/joshlong/joshlong.github.io-content.git "$GIT_CLONE_DIR"
 
-export PROFILE_PAGE=$GIT_CLONE_DIR/content/feed.html
+export PROFILE_PAGE=$GIT_CLONE_DIR/content/feed.md
 
 pipenv install
 pipenv run python main.py
