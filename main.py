@@ -141,7 +141,7 @@ def main(_: typing.List[str]):
         return d.isoformat().split('T')[0]
 
     def appearance_markdown_line(appearance: Appearance) -> str:
-        return '[(%s) %s](%s)' % (build_date_string(appearance.date), appearance.appearance, appearance.marketing_blurb)
+        return '*%s* - %s' % (build_date_string(appearance.date), appearance.marketing_blurb)
 
     def podcast_markdown_line(podcast: Podcast) -> str:
         return """[(%s) %s](%s) """ % (build_date_string(podcast.date),
