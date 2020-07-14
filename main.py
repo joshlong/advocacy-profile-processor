@@ -151,9 +151,7 @@ def main(_: typing.List[str]):
 
     def video_markdown_line(video: Video) -> str:
         return """[(%s) %s](%s) """ % (build_date_string(video.date),
-                                       video.title,
-                                       'https://www.youtube.com/watch?v=%s' % video.youtube_id
-                                       )
+                                       video.title, 'https://www.youtube.com/watch?v=%s' % video.youtube_id)
 
     def record_date_key(record: typing.Union[typing.Union[Video, Podcast], Appearance]) -> float:
         return time.mktime(record.date.timetuple())
@@ -178,7 +176,7 @@ def main(_: typing.List[str]):
         return '%s%s%s' % (newlines, c, newlines)
 
     markup = replace_fragment(content, 'APPEARANCES', add_newlines_to_section(appearances_markup))
-    markup = replace_fragment(content, 'PODCASTS', add_newlines_to_section(podcasts_markup))
+    markup = replace_fragment(markup, 'PODCASTS', add_newlines_to_section(podcasts_markup))
     markup = replace_fragment(markup, 'SCREENCASTS', add_newlines_to_section(videos_markup))
     markup = '%s\n\n%s' % (markup, '<!-- generated %s -->' % datetime.datetime.now().isoformat())
 
