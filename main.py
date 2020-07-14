@@ -11,6 +11,18 @@ import requests
 
 
 @dataclasses.dataclass
+class Appearance(object):
+    appearance: str
+    location: str
+    start_date: str
+    end_date: str
+    time: str
+    location_address: str
+    marketing_blurb: str
+    date: datetime.datetime
+
+
+@dataclasses.dataclass
 class Podcast(object):
     id: str
     uid: str
@@ -64,6 +76,33 @@ def fetch_spring_io_blogs() -> typing.List[Blog]:
 
 ##
 
+def fetch_appearances() -> typing.List[Appearance]:
+    appearances = load_json_from_network('http://joshlong.com/appearances.json')
+    results = []
+
+    def key_for(a: typing.Dict, key: str) -> typing.Any:
+        if key in a.keys():
+            return a[key]
+        return None
+
+    for a in appearances:
+        start_date = a['start_date']
+        m, d, y = [int(x) for x in start_date.split('/')]
+        date: datetime.datetime = datetime.datetime(y, m, d)
+        results.append(Appearance(
+            key_for(a, 'appearance'),
+            key_for(a, 'location'),
+            key_for(a, 'start_date'),
+            key_for(a, 'end_date'),
+            key_for(a, 'time'),
+            key_for(a, 'location_address'),
+            key_for(a, 'marketing_blurb'),
+            date
+        ))
+
+    return results
+
+
 def fetch_spring_tips_videos() -> typing.List[Video]:
     result = []
     videos = load_json_from_network('https://springtipslive.io/episodes.json')
@@ -101,6 +140,9 @@ def main(_: typing.List[str]):
     def build_date_string(d: datetime.datetime) -> str:
         return d.isoformat().split('T')[0]
 
+    def appearance_markdown_line(appearance: Appearance) -> str:
+        return '[(%s) %s](%s)' % (build_date_string(appearance.date), appearance.appearance, appearance.marketing_blurb)
+
     def podcast_markdown_line(podcast: Podcast) -> str:
         return """[(%s) %s](%s) """ % (build_date_string(podcast.date),
                                        podcast.title,
@@ -113,8 +155,11 @@ def main(_: typing.List[str]):
                                        'https://www.youtube.com/watch?v=%s' % video.youtube_id
                                        )
 
-    def record_date_key(record: typing.Union[Video, Podcast]) -> float:
+    def record_date_key(record: typing.Union[typing.Union[Video, Podcast], Appearance]) -> float:
         return time.mktime(record.date.timetuple())
+
+    appearances: typing.List[Appearance] = sorted(fetch_appearances(), key=record_date_key, reverse=True)
+    appearances_markup = os.linesep.join(['* %s' % appearance_markdown_line(a) for a in appearances])
 
     podcasts: typing.List[Podcast] = sorted(fetch_bootiful_podcasts(), key=record_date_key, reverse=True)
     podcasts_markup = os.linesep.join(['* %s' % podcast_markdown_line(p) for p in podcasts])
@@ -132,6 +177,7 @@ def main(_: typing.List[str]):
         newlines = '\n' * 2
         return '%s%s%s' % (newlines, c, newlines)
 
+    markup = replace_fragment(content, 'APPEARANCES', add_newlines_to_section(appearances_markup))
     markup = replace_fragment(content, 'PODCASTS', add_newlines_to_section(podcasts_markup))
     markup = replace_fragment(markup, 'SCREENCASTS', add_newlines_to_section(videos_markup))
     markup = '%s\n\n%s' % (markup, '<!-- generated %s -->' % datetime.datetime.now().isoformat())
