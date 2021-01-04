@@ -9,6 +9,7 @@ CLONE_DIR=$OUTPUT_DIR/clone
 JTT="$CLONE_DIR/jtt"
 VTT="$CLONE_DIR/vtt"
 
+
 mkdir -p $CLONE_DIR
 
 export PROFILE_PAGE=${JTT}/content/advocate/joshlong.md
